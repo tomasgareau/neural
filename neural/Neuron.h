@@ -17,12 +17,12 @@ class Neuron
         double _bias;
         double _activation;
         double _error;
-        vector<Neuron>* _next_layer;
+        vector<Neuron*>* _next_layer;
         vector<double> _weights;
 
     public:
         Neuron();
-        void init( vector<Neuron>* next_layer );
+        void init( vector<Neuron*>* next_layer );
 
         double get_activation();
         double get_error();
@@ -31,7 +31,7 @@ class Neuron
         void input( double val );
         void feedforward();
         void backprop();
-        void gradient_descent( double eta, int mini_batch_size );
+        void gradient_descent( double eta, long mini_batch_size );
 
         inline static double sigmoid( double val )
         {

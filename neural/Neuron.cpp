@@ -5,14 +5,18 @@ Neuron::Neuron()
     _next_layer = nullptr;
     _bias = distribution( generator );
     _activation = 0.0;
+    _error = 0.0;
 }
 
-void Neuron::init( vector<Neuron>* next_layer )
+void Neuron::init( vector<Neuron*>* next_layer )
 {
     _next_layer = next_layer;
-    for ( int i = 0; i < next_layer->size(); ++i )
+    if ( _next_layer != nullptr )
     {
-        _weights.push_back( distribution( generator ) );
+        for ( int i = 0; i < next_layer->capacity(); ++i )
+        {
+            _weights.push_back( distribution( generator ) );
+        }
     }
 }
 
@@ -42,7 +46,7 @@ void Neuron::feedforward()
     {
         for ( int i = 0; i < _next_layer->size(); ++i )
         {
-            (*_next_layer)[i].input( _weights[i] * _activation );
+            (*_next_layer)[i]->input( _weights[i] * _activation );
         }
     }
 }
@@ -55,19 +59,19 @@ void Neuron::backprop()
         double activation_factor = sigmoid_prime( get_activation() );
         for ( int i = 0; i < (*_next_layer).size(); ++i )
         {
-            _error += (*_next_layer)[i].get_error() * _weights[i];
+            _error += (*_next_layer)[i]->get_error() * _weights[i];
         }
         _error *= activation_factor;
     }
 }
 
-void Neuron::gradient_descent( double eta, int mini_batch_size )
+void Neuron::gradient_descent( double eta, long mini_batch_size )
 {
     if ( _next_layer != nullptr ) 
     {
         for ( int i = 0; i < (*_next_layer).size(); ++i )
         {
-            _weights[i] -= ( eta / mini_batch_size ) * get_activation() * (*_next_layer)[i].get_error();
+            _weights[i] -= ( eta / mini_batch_size ) * get_activation() * (*_next_layer)[i]->get_error();
         }
     }
 

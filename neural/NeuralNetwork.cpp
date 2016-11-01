@@ -2,9 +2,10 @@
 
 NeuralNetwork::NeuralNetwork( vector<int>& sizes )
 {
-    for ( auto i : sizes )
+    _layers.resize( sizes.size() );
+    for ( int i = 0; i < sizes.size(); ++i )
     {
-        _layers.push_back( vector<Neuron>( i ) );
+        _layers[i].reserve( sizes[i] );
     }
 }
 
@@ -12,15 +13,30 @@ void NeuralNetwork::init()
 {
     for ( int i = 0; i < _layers.size() - 1; ++i )
     {
-         for ( auto neuron : _layers[i] )
-         {
-             neuron.init( &_layers[i+1] );
-         }
+        for ( int j = 0; j < _layers[i].capacity(); ++j )
+        {
+            Neuron* neuron = new Neuron;
+            neuron->init( &_layers[i+1] );
+            _layers[i].push_back( neuron );
+        }
     }
 
-    for ( auto neuron : _layers.back() )
+    for ( int i = 0; i < _layers.back().capacity(); ++i )
     {
-        neuron.init( nullptr );
+        Neuron* neuron = new Neuron;
+        neuron->init( nullptr );
+        _layers.back().push_back( neuron );
+    }
+}
+
+void NeuralNetwork::clean_up()
+{
+    for ( auto vec : _layers )
+    {
+        for ( auto neuron : vec )
+        {
+            delete neuron;
+        }
     }
 }
 
@@ -48,9 +64,9 @@ void NeuralNetwork::stochastic_gradient_descent( Data& training_data, int epochs
             {
                 this->input( std::get<0>( test ) );
                 this->feedforward();
-                int output = this->get_output_int();
+                long output = this->get_output_int();
                 VectorD tmp = std::get<1>( test );
-                int expected_output = max_element( tmp.begin(), tmp.end() ) - tmp.begin();
+                long expected_output = max_element( tmp.begin(), tmp.end() ) - tmp.begin();
                 if ( output == expected_output )
                 {
                     ++correct;
@@ -88,7 +104,7 @@ void NeuralNetwork::update_mini_batch( DataIterator start, DataIterator stop, do
         {
             for ( auto neuron: *it )
             {
-                neuron.backprop();
+                neuron->backprop();
             }
         }
     }
@@ -98,7 +114,7 @@ void NeuralNetwork::update_mini_batch( DataIterator start, DataIterator stop, do
     {
         for ( auto neuron: vec )
         {
-            neuron.gradient_descent( eta, _layers.end() - _layers.begin() );
+            neuron->gradient_descent( eta, _layers.end() - _layers.begin() );
         }
     }
 }
@@ -110,7 +126,7 @@ void NeuralNetwork::feedforward()
     {
         for ( auto neuron: layer )
         {
-            neuron.feedforward();
+            neuron->feedforward();
         }
     }
 }
@@ -124,7 +140,7 @@ void NeuralNetwork::input( VectorD val )
 
     for ( int i = 0; i < val.size(); ++i )
     {
-        _layers[0][i].input( val[i] );
+        _layers[0][i]->input( val[i] );
     }
 }
 
@@ -133,13 +149,13 @@ VectorD NeuralNetwork::get_output()
     VectorD tmp;
     for ( auto neuron: _layers.back() )
     {
-        tmp.push_back( neuron.get_activation() );
+        tmp.push_back( neuron->get_activation() );
     }
 
     return tmp;
 }
 
-int NeuralNetwork::get_output_int()
+long NeuralNetwork::get_output_int()
 {
     VectorD tmp = get_output();
     return max_element( tmp.begin(), tmp.end() ) - tmp.begin();

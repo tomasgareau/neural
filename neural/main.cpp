@@ -101,7 +101,7 @@ int main()
 
     for ( int i = 0; i < test_num_images; ++i )
     {
-        test_data.add_data( read_data( test_images, img_size ), read_label( test_labels ) );
+        test_data.add_data( read_data( test_images, test_img_size ), read_label( test_labels ) );
     }
 
     std::cout << "Done.\n" << std::flush;
@@ -109,6 +109,8 @@ int main()
     std::cout << "Creating neural network... " << std::flush;
     std::vector<int> tmp = { 784, 30, 10 };
     NeuralNetwork net( tmp );
+    std::cout << "Initializing... " << std::flush;
+    net.init();
     std::cout << "Done.\n" << std::flush;
 
     std::cout << "Starting SGD.\n" << std::flush;

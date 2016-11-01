@@ -12,7 +12,7 @@ using std::vector;
 class NeuralNetwork 
 {
     private:
-        vector<vector<Neuron>> _layers;
+        vector<vector<Neuron*>> _layers;
 
     public:
         NeuralNetwork( vector<int>& sizes );
@@ -22,7 +22,8 @@ class NeuralNetwork
         void input( VectorD val );
         void feedforward();
         VectorD get_output();
-        int get_output_int();
+        long get_output_int();
+        void clean_up();
 };
 
 #endif
