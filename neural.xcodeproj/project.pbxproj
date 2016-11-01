@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C34AD9AA1DC78C2D00CC3CFD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C34AD9A91DC78C2D00CC3CFD /* main.cpp */; };
+		C34AD9B31DC78CEA00CC3CFD /* NeuralNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C34AD9B11DC78CEA00CC3CFD /* NeuralNetwork.cpp */; };
+		C34AD9B61DC78CF600CC3CFD /* Neuron.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C34AD9B41DC78CF600CC3CFD /* Neuron.cpp */; };
+		C34AD9BA1DC78D2000CC3CFD /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C34AD9B91DC78D2000CC3CFD /* main.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +26,13 @@
 
 /* Begin PBXFileReference section */
 		C34AD9A61DC78C2D00CC3CFD /* neural */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = neural; sourceTree = BUILT_PRODUCTS_DIR; };
-		C34AD9A91DC78C2D00CC3CFD /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		C34AD9B11DC78CEA00CC3CFD /* NeuralNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NeuralNetwork.cpp; sourceTree = "<group>"; };
+		C34AD9B21DC78CEA00CC3CFD /* NeuralNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeuralNetwork.h; sourceTree = "<group>"; };
+		C34AD9B41DC78CF600CC3CFD /* Neuron.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Neuron.cpp; sourceTree = "<group>"; };
+		C34AD9B51DC78CF600CC3CFD /* Neuron.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Neuron.h; sourceTree = "<group>"; };
+		C34AD9B71DC78CFF00CC3CFD /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Types.h; sourceTree = "<group>"; };
+		C34AD9B81DC78D0600CC3CFD /* Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Data.h; sourceTree = "<group>"; };
+		C34AD9B91DC78D2000CC3CFD /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +65,13 @@
 		C34AD9A81DC78C2D00CC3CFD /* neural */ = {
 			isa = PBXGroup;
 			children = (
-				C34AD9A91DC78C2D00CC3CFD /* main.cpp */,
+				C34AD9B91DC78D2000CC3CFD /* main.cpp */,
+				C34AD9B81DC78D0600CC3CFD /* Data.h */,
+				C34AD9B71DC78CFF00CC3CFD /* Types.h */,
+				C34AD9B41DC78CF600CC3CFD /* Neuron.cpp */,
+				C34AD9B51DC78CF600CC3CFD /* Neuron.h */,
+				C34AD9B11DC78CEA00CC3CFD /* NeuralNetwork.cpp */,
+				C34AD9B21DC78CEA00CC3CFD /* NeuralNetwork.h */,
 			);
 			path = neural;
 			sourceTree = "<group>";
@@ -120,7 +134,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C34AD9AA1DC78C2D00CC3CFD /* main.cpp in Sources */,
+				C34AD9B31DC78CEA00CC3CFD /* NeuralNetwork.cpp in Sources */,
+				C34AD9B61DC78CF600CC3CFD /* Neuron.cpp in Sources */,
+				C34AD9BA1DC78D2000CC3CFD /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
