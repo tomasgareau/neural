@@ -1,80 +1,55 @@
-#include "Neuron.h"
+//
+//  Neuron.cpp
+//  neural
+//
+//  Created by Tomas Gareau on 2016-11-01.
+//  Copyright © 2016 Tomas Gareau. All rights reserved.
+//
 
-Neuron::Neuron()
+#include "Neuron.hpp"
+
+Neuron::Neuron( std::shared_ptr<std::vector<std::shared_ptr<Link>>> prev, std::shared_ptr<std::vector<std::shared_ptr<Link>>> next )
 {
-    _next_layer = nullptr;
-    _bias = distribution( generator );
-    _activation = 0.0;
-    _error = 0.0;
+    _bias = Util::distribution( Util::generator );
+    _prev = prev;
+    _next = next;
 }
 
-void Neuron::init( vector<Neuron*>* next_layer )
+void Neuron::add_link( std::shared_ptr<Link> link, Util::LinkDirection direction )
 {
-    _next_layer = next_layer;
-    if ( _next_layer != nullptr )
+    if ( direction == Util::LinkDirection::PREV )
     {
-        for ( int i = 0; i < next_layer->capacity(); ++i )
-        {
-            _weights.push_back( distribution( generator ) );
-        }
+        _prev->push_back( link );
+    }
+    else if ( direction == Util::LinkDirection::NEXT )
+    {
+        _next->push_back( link );
+    }
+    else {
+        throw std::invalid_argument( "Direction is not a valid enum value from Util::LinkDirection" );
     }
 }
 
-void Neuron::input( double val )
+double Neuron::_get_input()
 {
-    _activation += sigmoid( val + _bias );
-}
-
-double Neuron::get_activation()
-{
-    return _activation;
-}
-
-double Neuron::get_error()
-{
-    return _error;
-}
-
-void Neuron::set_error( double val )
-{
-    _error = val;
-}
-
-void Neuron::feedforward()
-{
-    if ( _next_layer != nullptr )
+    double input = 0.0;
+    for ( std::shared_ptr<Link> link : *_prev )
     {
-        for ( int i = 0; i < _next_layer->size(); ++i )
-        {
-            (*_next_layer)[i]->input( _weights[i] * _activation );
-        }
+        input += link->output;
+    }
+    return input;
+}
+
+double Neuron::_get_output()
+{
+    return Util::sigmoid( _get_input() );
+}
+
+void Neuron::propagate_output()
+{
+    double activation = _get_output();
+    for ( std::shared_ptr<Link> link : *_next )
+    {
+        link->output = activation * link->weight;
     }
 }
-
-void Neuron::backprop()
-{
-    if ( _next_layer != nullptr )
-    {
-        _error = 0;
-        double activation_factor = sigmoid_prime( get_activation() );
-        for ( int i = 0; i < (*_next_layer).size(); ++i )
-        {
-            _error += (*_next_layer)[i]->get_error() * _weights[i];
-        }
-        _error *= activation_factor;
-    }
-}
-
-void Neuron::gradient_descent( double eta, long mini_batch_size )
-{
-    if ( _next_layer != nullptr ) 
-    {
-        for ( int i = 0; i < (*_next_layer).size(); ++i )
-        {
-            _weights[i] -= ( eta / mini_batch_size ) * get_activation() * (*_next_layer)[i]->get_error();
-        }
-    }
-
-    _bias -= ( eta / mini_batch_size ) * get_error();
-}
-
