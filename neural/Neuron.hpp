@@ -19,18 +19,18 @@ class Neuron
 {
 private:
     double _bias;
-    std::shared_ptr<std::vector<std::shared_ptr<Link>>> _prev;
-    std::shared_ptr<std::vector<std::shared_ptr<Link>>> _next;
-    
-    double _get_input();
-    double _get_output();
+    std::unique_ptr<std::vector<std::shared_ptr<Link>>> _prev;
+    std::unique_ptr<std::vector<std::shared_ptr<Link>>> _next;
     
 public:
-    Neuron( std::shared_ptr<std::vector<std::shared_ptr<Link>>> prev, std::shared_ptr<std::vector<std::shared_ptr<Link>>> next );
-    virtual ~Neuron();
+    Neuron();
     
     void add_link( std::shared_ptr<Link> link, Util::LinkDirection direction );
-    void propagate_output();
+    void propagate_activation();
+    void backprop();
+    void gradient_descent( double eta, double mini_batch_size );
+    double get_input();
+    double get_output();
 };
 
 #endif /* Neuron_hpp */
